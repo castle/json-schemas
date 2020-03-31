@@ -31,7 +31,8 @@
       "properties": {
         "email": {
           "description": "The identified user's email address",
-          "type": "string"
+          "type": "string",
+          "pattern": "^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$"
         },
         "registered_at": {
           "description": "The timestamp of the user's account creation. Useful for determining newly registered accounts",
