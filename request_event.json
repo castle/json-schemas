@@ -13,7 +13,7 @@
       "oneOf": [
         { "$ref": "#/definitions/user_id_events" },
         { "$ref": "#/definitions/anonymous_events" },
-        { "$ref": "#/definitions/device_events" }
+        { "$ref": "#/definitions/command_events" }
       ]
     },
     "user_id": {
@@ -43,20 +43,21 @@
       "type": "object",
       "properties": {
         "client_id": {
-          "description": "The Castle mobile SDK or c.js fingerprint value. If none, set to boolean false",
-          "type": ["string", "boolean"],
-          "oneOf": [
-            {
-              "const": "false"
-            },
-            {
-              "pattern": "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}"
-            }
-          ]
+          "description": "The Castle mobile SDK or c.js fingerprint value. If not found for this event (i.e. browser JS disabled), set to boolean false. If fingerprint is not integrated for your environment, set to null",
+          "type": ["null", "boolean", "string"],
+          "default": null
         },
         "ip": {
-          "description": "The IP address of the originating request. Do not set to a proxy value",
-          "type": "string"
+          "description": "The IPv4 or IPv6 address of the originating request. Must be a valid, public IP",
+          "type": "string",
+          "oneOf": [
+            {
+              "pattern": "^(?!(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.).*)(?!255\\.255\\.255\\.255)(25[0-5]|2[0-4][0-9]|[1][0-9][0-9]|[1-9][0-9]|[1-9])(\\.(25[0-5]|2[0-4][0-9]|[1][0-9][0-9]|[1-9][0-9]|[0-9])){3}$"
+            },
+            {
+              "pattern": "^([A-Fa-f0-9]{1,4}::?){1,7}[A-Fa-f0-9]{1,4}$"
+            }
+          ]
         },
         "user_agent": {
           "description": "The User-Agent of the originating request",
@@ -72,7 +73,7 @@
     "device_token": {
       "description": "The device token, if available/applicable",
       "type": "string",
-      "pattern": "^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_.+/=].+$"
+      "pattern": "^\\S+$"
     }
   },
   "required": ["event", "context"],
@@ -87,7 +88,7 @@
     },
     {
       "if": {
-        "properties": { "event": { "$ref": "#/definitions/device_events" } }
+        "properties": { "event": { "$ref": "#/definitions/command_events" } }
       },
       "then": {
         "required": ["device_token"]
@@ -122,8 +123,8 @@
       "type": "string",
       "enum": ["$login.failed"]
     },
-    "device_events": {
-      "description": "Event names that require device_token",
+    "command_events": {
+      "description": "Event names for responding to incident reviews",
       "type": "string",
       "enum": ["$review.resolved", "$review.escalated"]
     }
