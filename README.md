@@ -12,7 +12,8 @@
   "properties": {
     "sent_at": {
       "description": "ISO 8601 timestamp for event creation",
-      "type": "string"
+      "type": "string",
+      "pattern": "^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]{3})(Z)?$"
     },
     "event": {
       "oneOf": [
@@ -32,7 +33,7 @@
         "email": {
           "description": "The identified user's email address",
           "type": "string",
-          "pattern": "^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$"
+          "pattern": "^\\S+@\\S+.[a-zA-Z]\\S+$"
         },
         "registered_at": {
           "description": "The timestamp of the user's account creation. Useful for determining newly registered accounts",
@@ -49,8 +50,8 @@
       "type": "object",
       "properties": {
         "client_id": {
-          "description": "The Castle mobile SDK or c.js fingerprint value. If not found for this event (i.e. browser JS disabled), set to boolean false. If fingerprint is not integrated for your environment, set to null",
-          "type": ["null", "boolean", "string"],
+          "description": "The Castle mobile SDK or c.js fingerprint value. unavailable, set to boolean false",
+          "type": ["boolean", "string"],
           "default": null
         },
         "ip": {
