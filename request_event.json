@@ -1,14 +1,15 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "http://api.castle.io/schemas/v0.1/request_event.json",
-  "title": "Castle Event Context",
+  "title": "Castle Event",
   "description": "Event information sent to Castle's /track or /authenticate endpoints",
   "type": "object",
   "properties": {
-    "sent_at": {
+    "created_at": {
       "description": "ISO 8601 timestamp for event creation",
       "type": "string",
-      "pattern": "^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]{3})(Z)?$"
+      "pattern": "^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]{3})(Z)?$",
+      "example": "2020-04-30T11:22.345Z"
     },
     "event": {
       "oneOf": [
@@ -19,7 +20,8 @@
     },
     "user_id": {
       "description": "A unique user identifier",
-      "type": "string"
+      "type": "string",
+      "example": "user_123"
     },
     "user_traits": {
       "description": "Known traits of the identified user",
@@ -34,6 +36,9 @@
           "description": "The timestamp of the user's account creation. Useful for determining newly registered accounts",
           "type": "string"
         }
+      },
+      "example": {
+        "email": "user@example.com"
       }
     },
     "properties": {
@@ -47,7 +52,8 @@
         "client_id": {
           "description": "The Castle mobile SDK or c.js fingerprint value. unavailable, set to boolean false",
           "type": ["boolean", "string"],
-          "default": null
+          "default": null,
+          "example": false
         },
         "ip": {
           "description": "The IPv4 or IPv6 address of the originating request. Must be a valid, public IP",
@@ -59,15 +65,34 @@
             {
               "pattern": "^([A-Fa-f0-9]{1,4}::?){1,7}[A-Fa-f0-9]{1,4}$"
             }
-          ]
+          ],
+          "example": "1.2.3.4"
         },
         "user_agent": {
           "description": "The User-Agent of the originating request",
-          "type": "string"
+          "type": "string",
+          "example": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:75.0) Gecko/20100101 Firefox/75.0"
         },
         "headers": {
           "description": "The Headers object of the originating request. Optional, but highly recommended",
-          "type": "object"
+          "type": ["object", "array"],
+          "example": {
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+            "accept-encoding": "gzip, deflate, br",
+            "accept-language": "en-US,en;q=0.9",
+            "content-length": 229,
+            "content-type": "application/x-www-form-urlencoded",
+            "dnt": 1,
+            "host": "https://example.com",
+            "origin": "https://example.com",
+            "referer": "https://example.com",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "same-origin",
+            "sec-fetch-user": 1,
+            "upgrade-insecure-requests": 1,
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:75.0) Gecko/20100101 Firefox/75.0"
+          }
         }
       },
       "required": ["client_id", "ip", "user_agent"]
@@ -75,7 +100,8 @@
     "device_token": {
       "description": "The device token, if available/applicable",
       "type": "string",
-      "pattern": "^\\S+$"
+      "pattern": "^\\S+$",
+      "example": "eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6IkZSWHZnc3pvRWNHejNXYzVic1pjUHBjV3NzRXF1NDhqIiwidmVyc2lvbiI6MC4xfQ.AI5m5rUf97KZQg4o0zITwhNtbdgiAN9C2p3soDTg4sQ"
     }
   },
   "required": ["event", "context"],
@@ -118,17 +144,20 @@
         "$challenge.failed",
         "$transaction.attempted",
         "$session.extended"
-      ]
+      ],
+      "example": "$login.succeeded"
     },
     "anonymous_events": {
       "description": "Event names that do not require user_id",
       "type": "string",
-      "enum": ["$login.failed"]
+      "enum": ["$registration.attempted", "$login.failed"],
+      "example": "$login.failed"
     },
     "command_events": {
       "description": "Event names for responding to incident reviews",
       "type": "string",
-      "enum": ["$review.resolved", "$review.escalated"]
+      "enum": ["$review.resolved", "$review.escalated"],
+      "example": "$review.resolved"
     }
   }
 }
