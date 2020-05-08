@@ -1,6 +1,6 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "http://api.castle.io/schemas/v0.1/webhook_event.json",
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://api.castle.io/schemas/{{version}}/webhook_event.json",
   "title": "Castle Webhook Payload",
   "description": "Schema for Castle.io webhooks (docs.castle.io)",
   "type": "object",
