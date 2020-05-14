@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://api.castle.io/schemas/{{version}}/authenticate_response.json",
+  "title": "Castle Authenticate API Response",
+  "description": "Response from Castle /authenticate endpoint",
+  "type": "object",
+  "definitions": {
+    "action": {
+      "description": "Recommended action by Castle",
+      "type": "string",
+      "enum": [
+        "allow",
+        "challenge",
+        "deny"
+      ],
+      "example": "allow"
+    }
+  },
+  "properties": {
+    "action": { "$ref": "#/definitions/action" },
+    "device_token": {
+      "description": "A Castle-generated token that can be used to approve or report a device. This won't be available for anonymous events",
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\S+$",
+      "example": "eyJhbGciOiJI1NiJ9.eyJ0b2tlbiI6InRlc3QiLCJzaW9uIjowLjF9._-0l6TlDH7m78l19z1amMQ02m7s"
+    },
+    "user_id": {
+      "description": "The user_id provided in the request to /authenticate",
+      "type": "string",
+      "example": "user_123"
+    }
+  },
+  "required": ["action", "user_id"]
+}
