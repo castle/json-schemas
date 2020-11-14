@@ -150,13 +150,20 @@
     "anonymous_events": {
       "description": "Event names that do not require user_id",
       "type": "string",
-      "enum": ["$registration.attempted", "$login.failed"],
+      "enum": [
+        "$registration.attempted",
+        "$login.failed",
+        "$password_reset_request.attempted"
+      ],
       "example": "$login.failed"
     },
     "command_events": {
       "description": "Event names for responding to incident reviews",
       "type": "string",
-      "enum": ["$review.resolved", "$review.escalated"],
+      "enum": [
+        "$review.resolved",
+        "$review.escalated"
+      ],
       "example": "$review.resolved"
     }
   }

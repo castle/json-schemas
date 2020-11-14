@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://api.castle.io/schemas/v0.1/webhook_payload.json",
+  "title": "Castle Webhook Payload",
+  "description": "Schema for Castle.io webhooks (docs.castle.io)",
+  "type": "object",
+  "definitions": {
+    "security_event": {
+      "type": "string",
+      "enum": [
+        "$incident.confirmed",
+        "$review.opened"
+      ],
+      "example": "$review.opened"
+    }
+  },
+  "properties": {
+    "api_version": {
+      "type": "string",
+      "description": "API version used",
+      "example": "v1"
+    },
+    "app_id": {
+      "type": "string",
+      "description": "App ID, environment-specific",
+      "example": "111111111111111",
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO8601 formatted timestamp when the security event was triggered",
+      "example": "2020-04-30T11.22.345Z"
+    },
+    "type": { "$ref": "#/definitions/security_event" },
+    "data": {
+      "type": "object",
+      "description": "Details about the user, event, and device used",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "A Castle-generated unique ID for the event",
+          "example": "test"
+        },
+        "device_token": {
+          "type": "string",
+          "description": "A Castle-generated token that can be used to approve or report a device",
+          "example": "eyJhbGciOiJI1NiJ9.eyJ0b2tlbiI6InRlc3QiLCJzaW9uIjowLjF9._-0l6TlDH7m78l19z1amMQ02m7s"
+        },
+        "user_id": {
+          "type": "string",
+          "description": "The user_id as it was provided to Castle",
+          "example": "2"
+        },
+        "trigger": {
+          "description": "The Castle event that triggered the security event",
+          "$ref": "request_event.json#/definitions/user_id_events"
+        },
+        "context": {
+          "type": "object",
+          "description": "Contextual information about the triggering event",
+          "properties": {
+            "ip": {
+              "type": "string",
+              "description": "The client IP address of the triggering event",
+              "example": "1.2.3.4"
+            },
+            "isp": {
+              "type": ["object", "null"],
+              "description": "The ISP associated with the client IP address",
+              "properties": {
+                "isp_name": {
+                  "type": "string",
+                  "description": "The ISP name",
+                  "example": "CastleNet"
+                },
+                "isp_organization": {
+                  "type": "string",
+                  "description": "The registered organization name for the ISP",
+                  "example": "Castle"
+                }
+              }
+            },
+            "location": {
+              "type": ["object", "null"],
+              "description": "An object representing location properties, as characterized by IP",
+              "properties": {
+                "country_code": {
+                  "type": "string",
+                  "description": "The 2-letter country code",
+                  "example": "US"
+                },
+                "country": {
+                  "type": "string",
+                  "description": "The country name",
+                  "example": "United States"
+                },
+                "region_code": {
+                  "type": "string",
+                  "description": "The state, province, or region abbreviation",
+                  "example": "MA"
+                },
+                "region": {
+                  "type": "string",
+                  "description": "The state, province, or region",
+                  "example": "Massachusetts"
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city name",
+                  "example": "Boston"
+                },
+                "lat": {
+                  "type": "number",
+                  "description": "The latitude coordinate",
+                  "example": "42.3292"
+                },
+                "lon": {
+                  "type": "number",
+                  "description": "The longitude coordinate",
+                  "example": "-71.0263"
+                }
+              }
+            },
+            "user_agent": {
+              "type": "object",
+              "description": "Properties of the Client, as characterized by the User-Agent string",
+              "properties": {
+                "raw": {
+                  "type": "string",
+                  "description": "The User-Agent string",
+                  "example": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko)"
+                },
+                "browser": {
+                  "type": "string",
+                  "description": "The browser name",
+                  "example": "Chrome"
+                },
+                "version": {
+                  "type": "string",
+                  "description": "The browser version number",
+                  "example": "42.0.2311"
+                },
+                "os": {
+                  "type": "string",
+                  "description": "The operating system name and version",
+                  "example": "Mac OS X 10.9.5"
+                },
+                "mobile": {
+                  "type": "boolean",
+                  "description": "boolean value representing whether the User-Agent is a mobile device",
+                  "example": false
+                },
+                "platform": {
+                  "type": "string",
+                  "description": "The platform name",
+                  "example": "Mac OS X"
+                },
+                "device": {
+                  "type": "string",
+                  "description": "The device name",
+                  "example": "Unknown"
+                },
+                "family": {
+                  "type": "string",
+                  "description": "The family name of the device",
+                  "example": "Chrome"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

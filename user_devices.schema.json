@@ -1,0 +1,195 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://castle.io/schemas/user-devices.json",
+    "type": "object",
+    "title": "User Device",
+    "required": [
+        "total_count",
+        "data"
+    ],
+    "properties": {
+        "total_count": {
+            "type": "number",
+            "examples": [
+                3
+            ]
+        },
+        "data": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "$ref": "#/definitions/user_device"
+            }
+        }
+    },
+    "definitions": {
+        "user_device": {
+            "$id": "#/definitions/user_device",
+            "title": "Device Schema",
+            "description": "Details about a single device of a user",
+            "type": "object",
+            "required": [
+                "token",
+                "created_at"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "examples": [
+                        "eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6ImhZeDNtRVN4RzJFTDdmM21ZcGdweERqNjhTR0ptVmRwIiwidmVyc2lvbiI6MC4xfQ.MlbMcKeo95H0-YpvHXD8OMFydmIVqmNKTZVfS6gWXDM"
+                    ]
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "examples": ["2019-06-01T00:04:40.057Z"]
+                },
+                "last_seen_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "examples": ["2019-06-03T17:15:04.023Z"]
+                },
+                "approved_at": {
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "format": "date-time"
+                },
+                "escalated_at": {
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "format": "date-time"
+                },
+                "mitigated_at": {
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "format": "date-time"
+                },
+                "context": {
+                    "$ref": "#/definitions/context"
+                },
+                "is_current_device": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "context": {
+            "id": "#/definitions/context",
+            "title": "Context Schema",
+            "description": "The originating http request context",
+            "type": "object",
+            "properties": {
+                "ip": {
+                    "type": "string",
+                    "format": "ipv4",
+                    "examples": ["172.112.41.67"]
+                },
+                "location": {
+                    "$ref": "#/definitions/location"
+                },
+                "user_agent": {
+                    "$ref": "#/definitions/user_agent"
+                },
+                "properties": {
+                    "type": "object"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "location": {
+            "id": "#/definitions/location",
+            "title": "Location Schema",
+            "description": "An object with properties that describe a geographic location",
+            "type": "object",
+            "properties": {
+                "country_code": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2,
+                    "examples": ["US"]
+                },
+                "country": {
+                    "type": "string",
+                    "examples": ["United States"]
+                },
+                "region": {
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "examples": ["California"]
+                },
+                "region_code": {
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "examples": ["CA"]
+                },
+                "city": {
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "examples": ["Garden Grove"]
+                },
+                "lat": {
+                    "type": "number",
+                    "examples": [33.7832]
+                },
+                "lon": {
+                    "type": "number",
+                    "examples": [-117.9773]
+                }
+            }
+        },
+        "user_agent": {
+            "id": "#/definitions/user_agent",
+            "title": "User Agent Schema",
+            "description": "The User Agent details of the originating request (i.e. browser, platform, versions, etc)",
+            "type": "object",
+            "required": ["raw"],
+            "properties": {
+                "raw": {
+                    "type": "string",
+                    "examples": ["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"]
+                },
+                "browser": {
+                    "type": "string",
+                    "examples": ["Safari"]
+                },
+                "version": {
+                    "type": "string",
+                    "examples": ["12.1.1"]
+                },
+                "os": {
+                    "type": "string",
+                    "examples": ["Mac OS X 10.14.5"]
+                },
+                "mobile": {
+                    "type": "boolean",
+                    "examples": [false]
+                },
+                "platform": {
+                    "type": "string",
+                    "examples": ["Mac OS X"]
+                },
+                "device": {
+                    "type": "string",
+                    "examples": ["Unknown"]
+                },
+                "family": {
+                    "type": "string",
+                    "examples": ["Safari"]
+                }
+            }
+        }
+    }
+}
