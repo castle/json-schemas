@@ -23,7 +23,7 @@
     "app_id": {
       "type": "string",
       "description": "App ID, environment-specific",
-      "example": "111111111111111",
+      "example": "111111111111111"
     },
     "created_at": {
       "type": "string",
